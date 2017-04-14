@@ -1,6 +1,8 @@
 local composer = require("composer")
 local scene = composer.newScene()
 
+local topBannerId = "1490135372226"
+
 local Save = require("modules.save")
 local inMobi = require("plugin.inMobi")
 local Sound = require("modules.sound")
@@ -27,21 +29,28 @@ function scene:create (event)
 	score = 0
 
 	-- Print score label
-	lblScore = display.newText("Score: " .. score , centerX , 80)
+	lblScore = display.newText( score , screenWidth - 20 , 80 , native.systemFontBold)
 	lblScore.fill = {0,0,0}	
 
 	-- Create Grid
 	Grid:create()
 
+	-- Create ad
+	inMobi.init(adListener , {
+		accountId="allany"
+	})
+
 	sceneGroup:insert(Grid.displayGroup)
 	sceneGroup:insert(Deck.displayGroup)
 	sceneGroup:insert(lblScore)
-
-	Grid.displayGroup:addEventListener("tap" , finishGame)
 end
 
 function scene:show (event)
 	if event.phase == "will" then
+ 		-- Reset the score
+ 		score = 0
+ 		updateScore(score)
+
 		-- Clear the deck
 		Deck:clear()
 
@@ -50,6 +59,14 @@ function scene:show (event)
 
 		-- Reset the grid
 		Grid:reset(true)
+	elseif event.phase == "did" then
+		inMobi.show(topBannerId)
+	end
+end
+
+function scene:hide (event)
+	if event.phase == "will" then
+		inMobi.hide(topBannerId)
 	end
 end
 
@@ -145,11 +162,13 @@ end
 
 function updateScore (pointsToAdd)
 	score = score + pointsToAdd
-	lblScore.text = "Score: " .. score
+	lblScore.text = score
 end
 
 function finishGame ()
-	Save:setHighScore(10)
+	-- Update high score if necessary
+	local highScore = Save:getHighScore()
+	if score > tonumber(highScore) then Save:setHighScore(score) end
 
 	-- Load the menu scene
 	composer:gotoScene("scenes.mainmenu" , {
@@ -160,7 +179,7 @@ end
 function adListener (event)
 	if event.phase == "init" then
 		-- Load the ad
-		inMobi.load("banner" , "1490135372226" , {
+		inMobi.load("banner" , topBannerId , {
 			width = screenWidth,
 			height = 75,
 			autoRefresh = true	
@@ -168,17 +187,14 @@ function adListener (event)
 	elseif event.phase == "loaded" then
 		print("Loaded the ad")
 
-		inMobi.show("1490135372226")
+		inMobi.show(topBannerId)
 	elseif event.phase == "failed" then
 		print("Failed to load the ad")
 	end
 end
--- Create ad
-inMobi.init(adListener , {
-	accountId="allany"
-})
 
 scene:addEventListener("create" , scene)
 scene:addEventListener("show" , scene)
+scene:addEventListener("hide" , scene)
 
 return scene

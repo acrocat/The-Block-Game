@@ -1,9 +1,10 @@
 local Grid = require("modules.grid")
 local Shape = require("modules.shapes.shape")
+local color = require("modules.color")
 
 local rightCorner = {}
 rightCorner.name = "rightCorner"
-rightCorner.color = {1,1,0}
+rightCorner.color = {color.hex("#e88f5f")}
 
 rightCorner.getCoordinates = function (self , start)
 	return {

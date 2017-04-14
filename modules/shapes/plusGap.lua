@@ -1,9 +1,10 @@
 local Grid = require("modules.grid")
 local Shape = require("modules.shapes.shape")
+local color = require("modules.color")
 
 local plusGap = {}
 plusGap.name = "plusGap"
-plusGap.color = {0.4,0.9,0.9}
+plusGap.color = {color.hex("#5c7a2e")}
 
 plusGap.getCoordinates = function (self, start)
 	local c = {}

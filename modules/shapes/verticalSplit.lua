@@ -1,9 +1,10 @@
 local Grid = require("modules.grid")
 local Shape = require("modules.shapes.shape")
+local color = require("modules.color")
 
 local verticalSplit = {}
 verticalSplit.name = "verticalSplit"
-verticalSplit.color = {0.8 , 0.4 , 0.4}
+verticalSplit.color = {color.hex("#7c0324")}
 
 verticalSplit.getCoordinates = function (self , start)
 	return {

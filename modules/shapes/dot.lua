@@ -1,9 +1,10 @@
 local Grid = require("modules.grid")
 local Shape = require("modules.shapes.shape")
+local color = require("modules.color")
 
 local dot = {}
 dot.name = "dot"
-dot.color = {0,1,1}
+dot.color = {color.hex("#1f9187")}
 
 dot.getCoordinates = function (self , start)
 	return {{col = start.col , row = start.row}}

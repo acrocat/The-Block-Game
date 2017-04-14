@@ -7,7 +7,7 @@ math.randomseed(os.time())
 display.setStatusBar(display.HiddenStatusBar)
 
 -- Set background color to white
-display.setDefault("background" , Color.hex("#d7dbe0"))
+display.setDefault("background" , Color.hex("#efefef"))
 
 -- Load main menu
 composer:gotoScene("scenes.mainmenu")

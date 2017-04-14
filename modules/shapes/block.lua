@@ -1,11 +1,12 @@
 local Grid = require("modules.grid")
 local Shape = require("modules.shapes.shape")
 local inspect = require("modules.inspect")
+local color = require("modules.color")
 
 local block = {}
 
 block.name = "block"
-block.color = {0,1,0}
+block.color = {color.hex("#4286f4")}
 
 block.getCoordinates = function (self , start)
 	return {

@@ -1,9 +1,10 @@
 local Grid = require("modules.grid")
 local Shape = require("modules.shapes.shape")
+local color = require("modules.color")
 
 local horizontalLine = {}
 horizontalLine.name = "horizontalLine"
-horizontalLine.color = {0.5 , 1 , 0.5}
+horizontalLine.color = {color.hex("#c10793")}
 
 horizontalLine.getCoordinates = function (self , start)
 	return {

@@ -5,7 +5,7 @@ local highScoreFile = "highscore.txt"
 function loadFile (fileName) 
 	local path = system.pathForFile(fileName , system.DocumentsDirectory)
 
-	local file , errorString = io.open(path , "w")
+	local file , errorString = io.open(path , "r")
 	 if not file then
 	 	-- There was an error reading the file
 	 	print("File error: " .. errorString)
@@ -25,6 +25,7 @@ function storeInFile (fileName , data)
 	 	-- There was an error reading the file
 	 	print("File error: " .. errorString)
 	 else
+	 	print("Writing the data")
 	 	file:write(data)
 
 	 	io.close(file)

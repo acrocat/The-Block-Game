@@ -1,9 +1,10 @@
 local Grid = require("modules.grid")
 local Shape = require("modules.shapes.shape")
+local color = require("modules.color")
 
 local shortVerticalLine = {}
 shortVerticalLine.name = "shortVerticalLine"
-shortVerticalLine.color = {0.2 , 0.4 , 0.6}
+shortVerticalLine.color = {color.hex("#e85e83")}
 
 shortVerticalLine.getCoordinates = function (self , start)
 	return {

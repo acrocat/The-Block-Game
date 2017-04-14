@@ -19,6 +19,8 @@ grid.padding = padding
 grid.width = width
 grid.squareSize = squareSize
 grid.shadowColor = {0.5}
+grid.squareColor = {1,1,1}
+grid.squareAlpha = 0.8
 grid.topOffset = topOffset
 grid.squares = {}
 
@@ -28,9 +30,6 @@ grid.create = function (self)
 			local position = grid:getPoint(x, y)
 
 			local gridSquare = display.newRoundedRect(grid.displayGroup , position.x , position.y , grid.squareSize , grid.squareSize , 5)
-			-- gridSquare.fill = {0.9}
-			-- gridSquare.fill = {1,1,1}
-			gridSquare.alpha = 0.3
 
 			table.insert(grid.squares , {
 				square = gridSquare,
@@ -109,9 +108,9 @@ grid.reset = function (self , totalClear)
 	for i = 1 , #grid.squares do
 		local square = grid.squares[i]
 		if square.occupied == false or totalClear == true then
-			square.square.fill = {1,1,1}
+			square.square.fill = grid.squareColor
 			square.occupied = false
-			square.square.alpha = 0.3
+			square.square.alpha = grid.squareAlpha
 		end
 	end
 end
@@ -122,11 +121,11 @@ grid.purgeCompletedSets = function (self)
 				time = 100,
 				xScale = 0.1,
 				yScale = 0.1,
-				alpha = 0.3,
+				alpha = grid.squareAlpha,
 				onComplete = function () 
 					square.square.xScale = 1
 					square.square.yScale = 1
-					square.square.fill = {1,1,1}
+					square.square.fill = grid.squareColor
 					square.occupied = false
 				end
 			})

@@ -1,9 +1,10 @@
 local Grid = require("modules.grid")
 local Shape = require("modules.shapes.shape")
+local color = require("modules.color")
 
 local emptyXBlock = {}
 emptyXBlock.name = "emptyXBlock"
-emptyXBlock.color = {0.5,0.5,0.5}
+emptyXBlock.color = {color.hex("#1c5777")}
 
 emptyXBlock.getCoordinates = function (self , start)
 	local c = {}
