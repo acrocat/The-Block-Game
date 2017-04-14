@@ -60,7 +60,7 @@ function scene:show (event)
 		-- Reset the grid
 		Grid:reset(true)
 	elseif event.phase == "did" then
-		inMobi.show(topBannerId)
+		loadBannerAd()
 	end
 end
 
@@ -178,12 +178,7 @@ end
 
 function adListener (event)
 	if event.phase == "init" then
-		-- Load the ad
-		inMobi.load("banner" , topBannerId , {
-			width = screenWidth,
-			height = 75,
-			autoRefresh = true	
-		})
+		loadBannerAd()
 	elseif event.phase == "loaded" then
 		print("Loaded the ad")
 
@@ -191,6 +186,15 @@ function adListener (event)
 	elseif event.phase == "failed" then
 		print("Failed to load the ad")
 	end
+end
+
+function loadBannerAd ()
+	-- Load the ad
+	inMobi.load("banner" , topBannerId , {
+		width = screenWidth,
+		height = 75,
+		autoRefresh = true	
+	})
 end
 
 scene:addEventListener("create" , scene)
