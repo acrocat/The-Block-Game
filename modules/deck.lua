@@ -55,6 +55,7 @@ deck.pieceOrigins = {
 		y = screenHeight - 75
 	}
 }
+deck.displayGroup = display.newGroup()
 deck.pieces = {}
 
 deck.populate = function (self) 
@@ -85,13 +86,19 @@ deck.populate = function (self)
 		})
 		-- Add piece to the deck
 		table.insert(self.pieces , blockPiece)
+
+		self.displayGroup:insert(blockPiece)
 	end
 end
 
 deck.removePiece = function (self , tag)
 	-- Remove the piece from the deck
 	for i = #self.pieces , 1 , -1 do
-		if self.pieces[i].tag == tag then table.remove(self.pieces , i) end
+		local piece = self.pieces[i]
+		if piece.tag == tag then 
+			table.remove(self.pieces , i)
+			piece:removeSelf() 
+		end
 	end
 end
 
@@ -112,6 +119,12 @@ deck.getOriginForPiece  =  function (self , tag , piece)
 		y = origin.y - (piece.height / 2 * 0.75),
 		x = origin.x - (piece.width / 2 * 0.75)
 	}
+end
+
+deck.clear = function (self)
+	for i = 1 , self.maxNumberOfPieces do
+		self:removePiece(i)
+	end
 end
 
 return deck

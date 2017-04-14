@@ -28,7 +28,9 @@ grid.create = function (self)
 			local position = grid:getPoint(x, y)
 
 			local gridSquare = display.newRoundedRect(grid.displayGroup , position.x , position.y , grid.squareSize , grid.squareSize , 5)
-			gridSquare.fill = {0.9}
+			-- gridSquare.fill = {0.9}
+			-- gridSquare.fill = {1,1,1}
+			gridSquare.alpha = 0.3
 
 			table.insert(grid.squares , {
 				square = gridSquare,
@@ -38,6 +40,8 @@ grid.create = function (self)
 			})
 		end
 	end	
+
+	return grid.displayGroup
 end
 
 grid.getPoint = function (self , col , row)
@@ -97,6 +101,7 @@ grid.markSquareOccupied = function (self , col , row , color)
 	if square then 
 		square.occupied = true 
 		square.square.fill = color
+		square.alpha = 1
 	end	
 end
 
@@ -104,7 +109,9 @@ grid.reset = function (self , totalClear)
 	for i = 1 , #grid.squares do
 		local square = grid.squares[i]
 		if square.occupied == false or totalClear == true then
-			square.square.fill = {0.9}
+			square.square.fill = {1,1,1}
+			square.occupied = false
+			square.square.alpha = 0.3
 		end
 	end
 end
@@ -115,10 +122,11 @@ grid.purgeCompletedSets = function (self)
 				time = 100,
 				xScale = 0.1,
 				yScale = 0.1,
+				alpha = 0.3,
 				onComplete = function () 
 					square.square.xScale = 1
 					square.square.yScale = 1
-					square.square.fill = {0.9}
+					square.square.fill = {1,1,1}
 					square.occupied = false
 				end
 			})
@@ -182,7 +190,10 @@ end
 grid.drawShadow = function (self , col , row)
 	local square = grid:getSquareAtCoordinates(col , row)
 
-	if square and square.occupied == false then square.square.fill = grid.shadowColor end
+	if square and square.occupied == false then 
+		square.square.fill = grid.shadowColor 
+		square.square.alpha = 1
+	end
 end
 
 grid.checkValidityOfSquare = function (self , col , row) 
