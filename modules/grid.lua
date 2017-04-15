@@ -89,7 +89,7 @@ grid.getClosestSquareToObject = function (self , object)
 
 	local distance = math.sqrt(math.pow(deltay , 2) + math.pow(deltax , 2))
 
-	if distance > grid.squareSize then return false end
+	if distance > (grid.squareSize * 1.5) then return false end
 
 	return closest
 end

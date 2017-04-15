@@ -1,7 +1,9 @@
 local composer = require("composer")
 local scene = composer.newScene()
+local sound = require("modules.sound")
 
 local topBannerId = "1490135372226"
+local interstitialId = "1494050761712"
 
 local Save = require("modules.save")
 local inMobi = require("plugin.inMobi")
@@ -18,8 +20,13 @@ local screenHeight = display.contentHeight
 local centerX = display.contentCenterX
 local centerY = display.contentCenterY
 
+local starIcon
+local lblHighScore
+
 local lblScore
 local score
+
+local btnPause
 
 -- Scene Lifecycle
 function scene:create (event)
@@ -28,9 +35,23 @@ function scene:create (event)
 	-- Reset score
 	score = 0
 
+	-- Print high score label
+	starIcon = display.newImageRect("images/star.png" , 30 , 30)
+	starIcon.x = 20
+	starIcon.y = 80
+
+	lblHighScore = display.newText("0" , 50 , 80)
+	lblHighScore.fill = {0,0,0}
+
 	-- Print score label
-	lblScore = display.newText( score , screenWidth - 20 , 80 , native.systemFontBold)
+	lblScore = display.newText(score , screenWidth - 45 , 80 , native.systemFontBold)
 	lblScore.fill = {0,0,0}	
+
+	-- Pause button
+	btnPause = display.newImageRect("images/pause.png" , 30 , 20)
+	btnPause.x = centerX
+	btnPause.y = lblScore.y
+	btnPause:addEventListener("tap" , pause)
 
 	-- Create Grid
 	Grid:create()
@@ -43,6 +64,9 @@ function scene:create (event)
 	sceneGroup:insert(Grid.displayGroup)
 	sceneGroup:insert(Deck.displayGroup)
 	sceneGroup:insert(lblScore)
+	sceneGroup:insert(starIcon)
+	sceneGroup:insert(lblHighScore)
+	sceneGroup:insert(btnPause)
 end
 
 function scene:show (event)
@@ -59,6 +83,10 @@ function scene:show (event)
 
 		-- Reset the grid
 		Grid:reset(true)
+
+		-- Load the high score
+		local highScore = Save:getHighScore()
+		updateHighScore(highScore)
 	elseif event.phase == "did" then
 		loadBannerAd()
 	end
@@ -134,8 +162,8 @@ function shapePan (event)
 			-- Return back to origin
 			transition.to(event.target , {
 				time= 100,
-				xScale = 0.75,
-				yScale = 0.75,
+				xScale = Deck.pieceScale,
+				yScale = Deck.pieceScale,
 				x = origin.x,
 				y = origin.y,
 				alpha = 1
@@ -149,8 +177,8 @@ function shapePan (event)
 		-- Return back to origin
 		transition.to(event.target , {
 			time = 100,
-			xScale = 0.75,
-			yScale = 0.75,
+			xScale = Deck.pieceScale,
+			yScale = Deck.pieceScale,
 			x = origin.x,
 			y = origin.y,
 			alpha = 1
@@ -162,23 +190,29 @@ end
 
 function updateScore (pointsToAdd)
 	score = score + pointsToAdd
-	lblScore.text = score
+	lblScore.text = "Score: " .. score
+end
+
+function updateHighScore (score)
+	lblHighScore.text = score
 end
 
 function finishGame ()
-	-- Update high score if necessary
-	local highScore = Save:getHighScore()
-	if score > tonumber(highScore) then Save:setHighScore(score) end
-
-	-- Load the menu scene
-	composer:gotoScene("scenes.mainmenu" , {
-		effect = "fade"
+	-- Load game over screen
+	composer:showOverlay("scenes.gameover" , {
+		effect = "fade"	,
+		time = 300,
+		isModal = true,
+		params = {
+			score = score
+		}
 	})
 end
 
 function adListener (event)
 	if event.phase == "init" then
 		loadBannerAd()
+		loadInterstitialAd()
 	elseif event.phase == "loaded" then
 		print("Loaded the ad")
 
@@ -196,6 +230,39 @@ function loadBannerAd ()
 		autoRefresh = true	
 	})
 end
+
+function loadInterstitialAd ()
+	inMobi.load("interstitial" , "1494050761712")
+end
+
+function pause ()
+	sound:pop()
+
+	composer:showOverlay("scenes.pause" , {
+		effect = "fade"	,
+		isModal = true
+	})
+end
+
+function scene:restartGame ()
+	inMobi.show(interstitialId)
+
+	Deck:clear()
+	Deck:populate()
+
+	Grid:reset(true)
+
+	score = 0
+	updateScore(0)
+end
+function scene:quit ()
+	composer.gotoScene("scenes.mainmenu" , {
+		effect = "fade",
+		time = 300
+	})
+end
+
+
 
 scene:addEventListener("create" , scene)
 scene:addEventListener("show" , scene)

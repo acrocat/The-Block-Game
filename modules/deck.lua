@@ -39,22 +39,24 @@ local screenWidth = display.contentWidth
 local screenHeight = display.contentHeight
 
 local deck = {}
+local deckPieceYOffset = 75
 
 deck.maxNumberOfPieces = 3
 deck.pieceOrigins = {
 	{
 		x = centerX - (screenWidth / 3.5),
-		y = screenHeight - 75
+		y = screenHeight - deckPieceYOffset
 	},
 	{
 		x = centerX,
-		y = screenHeight - 75
+		y = screenHeight - deckPieceYOffset
 	},
 	{
 		x = centerX + (screenWidth / 3.5),
-		y = screenHeight - 75
+		y = screenHeight - deckPieceYOffset
 	}
 }
+deck.pieceScale = 0.75
 deck.displayGroup = display.newGroup()
 deck.pieces = {}
 
@@ -71,8 +73,8 @@ deck.populate = function (self)
 		blockPiece.tag = i
 		blockPiece:addEventListener("touch" , shapePan)
 
-		blockPiece.xScale = 0.75
-		blockPiece.yScale = 0.75
+		blockPiece.xScale = self.pieceScale
+		blockPiece.yScale = self.pieceScale
 
 		-- Set origin position off screen
 		local origin = self:getOriginForPiece(i , blockPiece)
@@ -116,8 +118,8 @@ deck.getOriginForPiece  =  function (self , tag , piece)
 	local origin = self.pieceOrigins[tag]
 
 	return {
-		y = origin.y - (piece.height / 2 * 0.75),
-		x = origin.x - (piece.width / 2 * 0.75)
+		y = origin.y - (piece.height / 2 * self.pieceScale),
+		x = origin.x - (piece.width / 2 * self.pieceScale)
 	}
 end
 

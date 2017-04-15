@@ -3,6 +3,7 @@ local composer = require("composer")
 local inspect = require("modules.inspect")
 local scene = composer.newScene()
 local save = require("modules.save")
+local sound = require("modules.sound")
 
 local logo
 local btnStart
@@ -30,7 +31,9 @@ function scene:create (event)
 	btnStart.fill = {Color.hex("#123123")}
 	btnStartText = display.newText(menuItems , "PLAY!" , btnStart.x , btnStart.y , native.systemFontBold)
 
-	btnStart:addEventListener("tap" , function () 
+	btnStart:addEventListener("tap" , function ()
+		sound:pop()
+
 		composer.gotoScene("scenes.game" , {
 			effect = "crossFade",
 			time = 500
