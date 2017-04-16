@@ -2,11 +2,7 @@ local composer = require("composer")
 local scene = composer.newScene()
 local sound = require("modules.sound")
 
-local topBannerId = "1490135372226"
-local interstitialId = "1494050761712"
-
 local Save = require("modules.save")
-local inMobi = require("plugin.inMobi")
 local Sound = require("modules.sound")
 
 local Grid = require("modules.grid")
@@ -56,11 +52,6 @@ function scene:create (event)
 	-- Create Grid
 	Grid:create()
 
-	-- Create ad
-	inMobi.init(adListener , {
-		accountId="allany"
-	})
-
 	sceneGroup:insert(Grid.displayGroup)
 	sceneGroup:insert(Deck.displayGroup)
 	sceneGroup:insert(lblScore)
@@ -88,7 +79,7 @@ function scene:show (event)
 		local highScore = Save:getHighScore()
 		updateHighScore(highScore)
 	elseif event.phase == "did" then
-		loadBannerAd()
+		if inMobi.isLoaded(topBannerId) then inMobi.show(topBannerId) end
 	end
 end
 
@@ -209,28 +200,6 @@ function finishGame ()
 	})
 end
 
-function adListener (event)
-	if event.phase == "init" then
-		loadBannerAd()
-		loadInterstitialAd()
-	elseif event.phase == "loaded" then
-		print("Loaded the ad")
-
-		inMobi.show(topBannerId)
-	elseif event.phase == "failed" then
-		print("Failed to load the ad")
-	end
-end
-
-function loadBannerAd ()
-	-- Load the ad
-	inMobi.load("banner" , topBannerId , {
-		width = screenWidth,
-		height = 75,
-		autoRefresh = true	
-	})
-end
-
 function loadInterstitialAd ()
 	inMobi.load("interstitial" , "1494050761712")
 end
@@ -245,8 +214,6 @@ function pause ()
 end
 
 function scene:restartGame ()
-	inMobi.show(interstitialId)
-
 	Deck:clear()
 	Deck:populate()
 

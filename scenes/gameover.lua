@@ -3,7 +3,6 @@ local scene = composer.newScene()
 local Save = require("modules.save")
 local Color = require("modules.color")
 local Sound = require("modules.sound")
-local inMobi = require("plugin.inMobi")
 
 local lblScore
 local btnRestart
@@ -49,11 +48,12 @@ function scene:create (event)
 	btnRestart.x = display.contentWidth - btnRestart.width - 20
 	btnRestart.y = btnQuit.y
 	btnRestart:addEventListener("tap" , restart)
+end
 
-	-- Load ad
-	inMobi.init(adListener , {
-		accountId="allany"
-	})
+function scene:show (event)
+	if event.phase == "did" then
+		inMobi.show(interstitialAdId)
+	end
 end
 
 function scene:hide (event)
@@ -84,23 +84,8 @@ function hideMenu ()
 	composer:hideOverlay("fade" , 300)
 end
 
-function adListener (event)
-	if event.phase == "init" then
-		-- Load the ad
-		inMobi.load("interstitial" , "1494050761712" , {
-			width = display.contentWidth,
-			height = display.contentHeight
-		})
-	elseif event.phase == "loaded" then
-		print("Loaded the ad")
-
-		inMobi.show("1494050761712")
-	elseif event.phase == "failed" then
-		print("Failed to load the ad")
-	end
-end
-
 scene:addEventListener("create" , scene)
+scene:addEventListener("show" , scene)
 scene:addEventListener("hide" , scene)
 
 return scene
