@@ -18,9 +18,10 @@ local centerY = display.contentCenterY
 
 local starIcon
 local lblHighScore
+local highScore = 0
 
 local lblScore
-local score
+local score = 0
 
 local btnPause
 
@@ -58,6 +59,9 @@ function scene:create (event)
 	sceneGroup:insert(starIcon)
 	sceneGroup:insert(lblHighScore)
 	sceneGroup:insert(btnPause)
+
+	-- Load high score
+	highScore = Save:getHighScore()
 end
 
 function scene:show (event)
@@ -76,7 +80,6 @@ function scene:show (event)
 		Grid:reset(true)
 
 		-- Load the high score
-		local highScore = Save:getHighScore()
 		updateHighScore(highScore)
 	elseif event.phase == "did" then
 		ads:showBanner()
@@ -182,6 +185,11 @@ end
 function updateScore (pointsToAdd)
 	score = score + pointsToAdd
 	lblScore.text = "Score: " .. score
+
+	-- If the score is greater than the high score, update the high score label as well
+	if tonumber(score) > tonumber(highScore) then
+		updateHighScore(score)
+	end
 end
 
 function updateHighScore (score)
