@@ -225,8 +225,13 @@ function scene:restartGame ()
 
 	score = 0
 	updateScore(0)
+
+	-- Show interstitial ad
+	ads:showInterstitial()
 end
 function scene:quit ()
+	ads:showInterstitial()
+
 	composer.gotoScene("scenes.mainmenu" , {
 		effect = "fade",
 		time = 300

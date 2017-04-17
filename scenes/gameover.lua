@@ -50,11 +50,11 @@ function scene:create (event)
 	btnRestart:addEventListener("tap" , restart)
 end
 
-function scene:show (event)
-	if event.phase == "did" then
-		ads:showInterstitial()
-	end
-end
+-- function scene:show (event)
+-- 	if event.phase == "did" then
+-- 		ads:showInterstitial()
+-- 	end
+-- end
 
 function scene:hide (event)
 	if event.phase == "did" then
