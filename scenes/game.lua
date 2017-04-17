@@ -79,13 +79,13 @@ function scene:show (event)
 		local highScore = Save:getHighScore()
 		updateHighScore(highScore)
 	elseif event.phase == "did" then
-		if inMobi.isLoaded(topBannerId) then inMobi.show(topBannerId) end
+		ads:showBanner()
 	end
 end
 
 function scene:hide (event)
 	if event.phase == "will" then
-		inMobi.hide(topBannerId)
+		ads:hideBanner()
 	end
 end
 
@@ -200,10 +200,6 @@ function finishGame ()
 	})
 end
 
-function loadInterstitialAd ()
-	inMobi.load("interstitial" , "1494050761712")
-end
-
 function pause ()
 	sound:pop()
 
@@ -228,8 +224,6 @@ function scene:quit ()
 		time = 300
 	})
 end
-
-
 
 scene:addEventListener("create" , scene)
 scene:addEventListener("show" , scene)

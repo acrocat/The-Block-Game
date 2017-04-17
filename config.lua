@@ -10,6 +10,11 @@ application =
 		width = 320,
 		height = 568, 
 		scale = "letterbox",
-		fps = 60
+		fps = 60,
+		imageSuffix =
+		{
+		    ["@2x"] = 2.0,
+		    ["@3x"] = 3.0
+		}
 	},
 }

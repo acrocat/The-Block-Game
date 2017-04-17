@@ -52,7 +52,7 @@ end
 
 function scene:show (event)
 	if event.phase == "did" then
-		inMobi.show(interstitialAdId)
+		ads:showInterstitial()
 	end
 end
 

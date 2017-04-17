@@ -16,8 +16,15 @@ local shortVerticalLine = require("modules.shapes.shortVerticalLine")
 local verticalSplit = require("modules.shapes.verticalSplit")
 local plus = require("modules.shapes.plus")
 local plusGap = require("modules.shapes.plusGap")
+local horizontalLongLine = require("modules.shapes.horizontalLongLine")
+local horizontalSplit = require("modules.shapes.horizontalSplit")
 
 local availableShapes = {
+	Block,
+	LeftCorner,
+	RightCorner,
+	Line,
+	Dot,
 	Block,
 	LeftCorner,
 	RightCorner,
@@ -27,10 +34,15 @@ local availableShapes = {
 	xBlock,
 	emptyXBlock,
 	horizontalLine,
+	horizontalLine,
+	shortVerticalLine,
 	shortVerticalLine,
 	verticalSplit,
 	plus,
-	plusGap
+	plusGap,
+	horizontalLongLine,
+	horizontalLongLine,
+	horizontalSplit
 }
 
 local centerX = display.contentCenterX

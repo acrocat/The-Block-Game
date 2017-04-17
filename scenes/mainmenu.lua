@@ -28,7 +28,7 @@ function scene:create (event)
 	-- Create button to start game
 	btnStart = display.newRoundedRect(menuItems , display.contentCenterX , logo.y + logo.height , 200 , 50 , 10)
 
-	btnStart.fill = {Color.hex("#123123")}
+	btnStart.fill = {Color.hex("#7ED321")}
 	btnStartText = display.newText(menuItems , "PLAY!" , btnStart.x , btnStart.y , native.systemFontBold)
 
 	btnStart:addEventListener("tap" , function ()
